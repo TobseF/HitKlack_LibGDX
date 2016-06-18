@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Filled
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector2
 import de.tfr.game.lib.actor.Point
 import de.tfr.game.model.*
 import de.tfr.game.ui.BLACK
@@ -18,8 +19,8 @@ import de.tfr.game.ui.GREEN_LIGHT2
  */
 class Renderer(point: Point, val camera: Camera) : Point by point {
 
-    private val gap = 4
-    private val tick = 16f
+    private val gap = 6
+    private val blockWith = 18f
     private val radius = 8f
     private var renderer = ShapeRenderer()
 
@@ -43,9 +44,7 @@ class Renderer(point: Point, val camera: Camera) : Point by point {
         renderer.rect(x - radius, y - radius, radius * 2, radius * 2)
     }
 
-    fun getFieldSize(field: GameField): Float {
-        return gap + tick + (field.size * (gap + tick))
-    }
+    fun getFieldSize(field: GameField): Float = (blockWith / 2) + field.size * (gap + blockWith)
 
     fun end() {
         renderer.end();
@@ -56,8 +55,12 @@ class Renderer(point: Point, val camera: Camera) : Point by point {
     }
 
     fun renderTouchArea(touchAreas: List<Rectangle>) {
-        renderer.color = Color.CYAN
-        touchAreas.forEach { renderer.rect(it.x, it.y, it.width, it.height) }
+        renderer.color = Color.NAVY
+
+        touchAreas.forEach {
+            val center = it.getCenter(Vector2())
+            renderer.circle(center.x, center.y, it.width / 2)
+        }
     }
 
     fun renderStone(stone: Stone) {
@@ -65,7 +68,7 @@ class Renderer(point: Point, val camera: Camera) : Point by point {
     }
 
     private fun renderBlock(block: Block, stone: Stone?) {
-        val distance = gap + tick + (block.row * (gap + tick))
+        val distance = gap + blockWith + (block.row * (gap + blockWith))
         when (block.orientation) {
             Orientation.Left -> renderBlock(block, stone, x - distance, y)
             Orientation.Right -> renderBlock(block, stone, x + distance, y)
@@ -76,9 +79,9 @@ class Renderer(point: Point, val camera: Camera) : Point by point {
 
     private fun renderBlock(block: Block, stone: Stone?, x: Float, y: Float) {
         renderer.rect(x, y, 1f, 1f)
-        val length = ((block.row) * (tick * 2)) + ((2 * gap) * (block.row + 1))
+        val length = ((block.row) * (blockWith * 2)) + ((2 * gap) * (block.row + 1))
         val side = length / 2
-        val width = tick / 2
+        val width = blockWith / 2
         when {
             stone == null -> renderer.color = GREEN_LIGHT2
             stone.state == Stone.State.Active -> renderer.color = BLACK
@@ -86,29 +89,29 @@ class Renderer(point: Point, val camera: Camera) : Point by point {
         }
 
         when (block.orientation) {
-            Orientation.Left -> renderer.rect(x - width, y - side, tick, length)
-            Orientation.Right -> renderer.rect(x - width, y - side, tick, length)
-            Orientation.Up -> renderer.rect(x - side, y - width, length, tick)
-            Orientation.Down -> renderer.rect(x - side, y - width, length, tick)
+            Orientation.Left -> renderer.rect(x - width, y - side, blockWith, length)
+            Orientation.Right -> renderer.rect(x - width, y - side, blockWith, length)
+            Orientation.Up -> renderer.rect(x - side, y - width, length, blockWith)
+            Orientation.Down -> renderer.rect(x - side, y - width, length, blockWith)
         }
 
         when (block.orientation) {
             Orientation.Left -> {
-                renderTriangleLeftUp(x - width, y + side, tick)
-                renderTriangleLeftDown(x - width, y - side, tick)
+                renderTriangleLeftUp(x - width, y + side, blockWith)
+                renderTriangleLeftDown(x - width, y - side, blockWith)
             }
             Orientation.Right -> {
-                renderTriangleReightUp(x - width, y + side, tick)
-                renderTriangleReightDown(x - width, y - side, tick)
+                renderTriangleReightUp(x - width, y + side, blockWith)
+                renderTriangleReightDown(x - width, y - side, blockWith)
             }
 
             Orientation.Up -> {
-                renderTriangleUpLeft(x - side, y - width, tick)
-                renderTriangleUpRight(x + side, y - width, tick)
+                renderTriangleUpLeft(x - side, y - width, blockWith)
+                renderTriangleUpRight(x + side, y - width, blockWith)
             }
             Orientation.Down -> {
-                renderTriangleDownLeft(x - side, y - width, tick)
-                renderTriangleDownRight(x + side, y - width, tick)
+                renderTriangleDownLeft(x - side, y - width, blockWith)
+                renderTriangleDownRight(x + side, y - width, blockWith)
             }
 
         }

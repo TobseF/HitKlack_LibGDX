@@ -21,12 +21,14 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
     private val top: TouchArea
     private val bottom: TouchArea
 
-    private val size = 150f
+    private val distance = 90f
+    private val radius = 50f
 
     private val touchListeners: MutableCollection<ControlListener> = ArrayList()
 
     enum class Control {Left, Right, Top, Bottom, Esc, Action, Pause }
 
+    private class Button(centerX: Float, centerY: Float, radius: Float) : Rectangle(centerX - radius, centerY - radius, radius * 2, radius * 2)
     class TouchArea(val control: Control, val rect: Rectangle)
 
     interface ControlListener {
@@ -34,12 +36,13 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
     }
 
     init {
-        left = TouchArea(Left, Rectangle(x - gameRadius - size, y - gameRadius, size, gameRadius * 2))
-        right = TouchArea(Right, Rectangle(x + gameRadius, y - gameRadius, size, gameRadius * 2))
-        top = TouchArea(Top, Rectangle(x - gameRadius, y + gameRadius, gameRadius * 2, size))
-        bottom = TouchArea(Bottom, Rectangle(x - gameRadius, y - gameRadius - size, gameRadius * 2, size))
+        left = TouchArea(Left, Button(x - gameRadius - distance, y, radius))
+        right = TouchArea(Right, Button(x + gameRadius + distance, y, radius))
+        top = TouchArea(Top, Button(x, y + gameRadius + distance, radius))
+        bottom = TouchArea(Bottom, Button(x, y - gameRadius - distance, radius))
         Gdx.input.inputProcessor = this
     }
+
 
     val touchAreas: List<TouchArea> by lazy {
         arrayListOf(left, right, top, bottom)
