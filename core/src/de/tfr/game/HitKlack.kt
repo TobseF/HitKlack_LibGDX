@@ -23,24 +23,25 @@ class HitKlack : ApplicationAdapter() {
 
     private var game: BoxGame
     private val gameField = GameField(10)
-    private val resolution = Resolution(1920f, 1080f)
+    private val resolution = Resolution(800f, 800f)
 
     init {
         game = BoxGame(gameField)
     }
 
     override fun create() {
-        camera = OrthographicCamera(resolution.width, resolution.height);
+        camera = OrthographicCamera(resolution.height, resolution.height);
         camera.setToOrtho(false); //true to invert y axis
-        viewport = FitViewport(resolution.width, resolution.height, camera)
-        val center = Point2D((resolution.width / 2) - 500, (resolution.height / 2) - 150)
-        renderer = Renderer(center)
-        controller = Controller(center, renderer.getFieldSize(gameField), camera)
+        viewport = FitViewport(resolution.height, resolution.height, camera)
+        val center = Point2D((resolution.width / 2), (resolution.height / 2))
+        renderer = Renderer(center, camera)
+        controller = Controller(center, renderer.getFieldSize(gameField), viewport)
         controller.addTouchListener(game)
     }
 
     override fun render() {
         clear()
+
         camera.update();
         renderField()
         game.update(graphics.deltaTime)
@@ -55,6 +56,7 @@ class HitKlack : ApplicationAdapter() {
     }
 
     private fun clear() {
+
         clear(DEVICE)
     }
 
@@ -64,7 +66,7 @@ class HitKlack : ApplicationAdapter() {
     }
 
     override fun resize(width: Int, height: Int) {
-        viewport.update(width, height);
-        camera.position.set(0f, 0f, 0f)
+        viewport.update(width, height, true);
+        //camera.position.set(0f, 0f, 0f)
     }
 }

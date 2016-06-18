@@ -20,10 +20,8 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     }
 
     override fun controlEvent(control: Controller.Control) {
-        if (control == mapOrientation(active.block.orientation)) {
-            setStone(active)
-        }
         when (control) {
+            mapOrientation(active.block.orientation) -> setStone()
             Controller.Control.Action -> setStone(active)
             Controller.Control.Esc -> reset()
             Controller.Control.Pause -> pause = !pause
@@ -52,10 +50,10 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     private fun reset() {
         field.reset()
         activeRing = null
-        spawn()
+        respawnStone()
     }
 
-    private fun spawn() {
+    private fun respawnStone() {
         val field = field[field.size - 1][randomOrientation()]
         active = Stone(field)
     }
@@ -71,36 +69,43 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     }
 
     private fun move(stone: Stone) {
-        if (stone.block.row > 0) {
+        if (stone.isInLastRow()) {
+            misstep()
+        } else {
             val next = field[active.block.row - 1][active.block.orientation]
             active.block = next
-            if (next.isEmpty()) {
-            }
-        } else {
-            reset()
+        }
+    }
+
+    private fun Stone.isInLastRow() = this.block.row == 0
+    private fun setStone() {
+        if (active.block.isEmpty()) {
+            setStone(active)
         }
     }
 
     private fun setStone(stone: Stone) {
-        if (active.block.isEmpty()) {
-            active.block.stone = active
-            stone.freeze()
-            if (activeRing != null) {
-                if (activeRing!!.isFull()) {
-                    activeRing = null
-                } else if (activeRing?.index != active.block.row) {
-                    activeRing?.reset()
-                    active.block.reset()
-                    activeRing = null
-                    resetLastFullRing()
-                }
-            } else {
-                activeRing = field[active.block.row]
+        active.block.stone = active
+        stone.freeze()
+        if (activeRing != null) {
+            if (activeRing!!.isFull()) {
+                activeRing = null
+            } else if (activeRing?.index != active.block.row) {
+                misstep()
             }
-            spawn()
+        } else {
+            activeRing = field[active.block.row]
         }
+        respawnStone()
     }
 
+    private fun misstep() {
+        activeRing?.reset()
+        active.block.reset()
+        activeRing = null
+        resetLastFullRing()
+        respawnStone()
+    }
 
     private fun firstFull(): Ring? {
         return field.find(Ring::isFull)

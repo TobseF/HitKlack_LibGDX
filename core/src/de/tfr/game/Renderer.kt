@@ -1,5 +1,6 @@
 package de.tfr.game
 
+import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Filled
@@ -15,7 +16,7 @@ import de.tfr.game.ui.GREEN_LIGHT2
 /**
  * @author Tobse4Git@gmail.com
  */
-class Renderer(var point: Point) : Point by point {
+class Renderer(point: Point, val camera: Camera) : Point by point {
 
     private val gap = 4
     private val tick = 16f
@@ -23,6 +24,7 @@ class Renderer(var point: Point) : Point by point {
     private var renderer = ShapeRenderer()
 
     fun start() {
+        renderer.projectionMatrix = camera.combined;
         renderer.begin(Filled);
     }
 
