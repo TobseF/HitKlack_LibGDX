@@ -4,6 +4,7 @@ import de.tfr.game.model.GameField
 import de.tfr.game.model.Orientation
 import de.tfr.game.model.Ring
 import de.tfr.game.model.Stone
+import de.tfr.game.util.Timer
 
 /**
  * @author Tobse4Git@gmail.com
@@ -11,12 +12,19 @@ import de.tfr.game.model.Stone
 class BoxGame(val field: GameField) : Controller.ControlListener {
 
     private var active: Stone
-    private var time = 0f
-    private var pause = false
     private var activeRing: Ring? = null
+    private val timer: Timer
+    private val fallingSpeed = 0.3f
+    private val firstPause = 0.7f
 
     init {
         active = Stone(field[field.size - 1][Orientation.Left])
+        timer = Timer(firstPause, { doStep() })
+    }
+
+    private fun doStep() {
+        timer.actionTime = fallingSpeed
+        move(active)
     }
 
     override fun controlEvent(control: Controller.Control) {
@@ -24,7 +32,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
             mapOrientation(active.block.orientation) -> setStone()
             Controller.Control.Action -> setStone(active)
             Controller.Control.Esc -> reset()
-            Controller.Control.Pause -> pause = !pause
+            Controller.Control.Pause -> timer.togglePause()
         }
     }
 
@@ -40,15 +48,12 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     fun getStones() = listOf(active)
 
     fun update(deltaTime: Float) {
-        time += deltaTime
-        if (!pause && time >= 0.6f) {
-            time = 0f
-            move(active)
-        }
+        timer.update(deltaTime)
     }
 
     private fun reset() {
         field.reset()
+        timer.reset()
         activeRing = null
         respawnStone()
     }
@@ -56,6 +61,8 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     private fun respawnStone() {
         val field = field[field.size - 1][randomOrientation()]
         active = Stone(field)
+        timer.reset()
+        timer.actionTime = firstPause
     }
 
     private fun randomOrientation(): Orientation {
@@ -78,6 +85,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     }
 
     private fun Stone.isInLastRow() = this.block.row == 0
+
     private fun setStone() {
         if (active.block.isEmpty()) {
             setStone(active)

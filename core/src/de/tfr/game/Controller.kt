@@ -1,7 +1,7 @@
 package de.tfr.game
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
+import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
@@ -56,18 +56,18 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
 
     override fun keyDown(keycode: Int): Boolean {
         when (keycode) {
-            Input.Keys.RIGHT ->
+            Keys.RIGHT ->
                 notifyListener(Right)
-            Input.Keys.UP ->
+            Keys.UP ->
                 notifyListener(Top)
-            Input.Keys.DOWN ->
+            Keys.DOWN ->
                 notifyListener(Bottom)
-            Input.Keys.LEFT ->
+            Keys.LEFT ->
                 notifyListener(Left)
-            Input.Keys.SPACE -> {
+            Keys.SPACE -> {
                 notifyListener(Action)
             }
-            Input.Keys.P -> {
+            Keys.P -> {
                 notifyListener(Pause)
             }
         }

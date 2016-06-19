@@ -41,7 +41,6 @@ class HitKlack : ApplicationAdapter() {
 
     override fun render() {
         clear()
-
         camera.update();
         renderField()
         game.update(graphics.deltaTime)
@@ -55,10 +54,7 @@ class HitKlack : ApplicationAdapter() {
         renderer.end()
     }
 
-    private fun clear() {
-
-        clear(DEVICE)
-    }
+    private fun clear() = clear(DEVICE)
 
     private fun clear(color: Color) {
         Gdx.gl.glClearColor(color.r, color.g, color.b, color.a)
@@ -67,6 +63,5 @@ class HitKlack : ApplicationAdapter() {
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height, true);
-        //camera.position.set(0f, 0f, 0f)
     }
 }
