@@ -41,6 +41,7 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
         top = TouchArea(Top, Button(x, y + gameRadius + distance, radius))
         bottom = TouchArea(Bottom, Button(x, y - gameRadius - distance, radius))
         Gdx.input.inputProcessor = this
+        Gdx.input.isCatchBackKey = true;
     }
 
 
@@ -69,6 +70,9 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
             }
             Keys.P -> {
                 notifyListener(Pause)
+            }
+            Keys.ESCAPE, Keys.BACK -> {
+                notifyListener(Esc)
             }
         }
         return true

@@ -36,14 +36,14 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
         }
     }
 
-    fun mapOrientation(orientation: Orientation): Controller.Control {
-        when (orientation) {
-            Orientation.Left -> return Controller.Control.Left
-            Orientation.Right -> return Controller.Control.Right
-            Orientation.Up -> return Controller.Control.Top
-            Orientation.Down -> return Controller.Control.Bottom
-        }
-    }
+    fun mapOrientation(orientation: Orientation): Controller.Control =
+            when (orientation) {
+                Orientation.Left -> Controller.Control.Left
+                Orientation.Right -> Controller.Control.Right
+                Orientation.Up -> Controller.Control.Top
+                Orientation.Down -> Controller.Control.Bottom
+            }
+
 
     fun getStones() = listOf(active)
 
@@ -59,20 +59,14 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     }
 
     private fun respawnStone() {
-        val field = field[field.size - 1][randomOrientation()]
+        val field = field[field.size - 1][randomFreeOrientation()]
         active = Stone(field)
         timer.reset()
         timer.actionTime = firstPause
     }
 
-    private fun randomOrientation(): Orientation {
-        if (activeRing != null) {
-            val randomFreeSide = activeRing!!.randomFreeSide()
-            if (randomFreeSide != null) {
-                return randomFreeSide
-            }
-        }
-        return Orientation.random()
+    private fun randomFreeOrientation(): Orientation {
+        return activeRing?.randomFreeSide() ?: Orientation.random()
     }
 
     private fun move(stone: Stone) {
@@ -115,9 +109,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
         respawnStone()
     }
 
-    private fun firstFull(): Ring? {
-        return field.find(Ring::isFull)
-    }
+    private fun firstFull(): Ring? = field.find(Ring::isFull)
 
     private fun resetLastFullRing() {
         firstFull()?.reset()

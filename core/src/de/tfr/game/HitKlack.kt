@@ -47,11 +47,13 @@ class HitKlack : ApplicationAdapter() {
     }
 
     private fun renderField() {
-        renderer.start()
-        renderer.render(game.field)
-        renderer.renderTouchArea(controller.touchAreas.map { it.rect })
-        game.getStones().forEach { renderer.renderStone(it) }
-        renderer.end()
+        with(renderer) {
+            start()
+            render(game.field)
+            renderTouchArea(controller.touchAreas.map { it.rect })
+            game.getStones().forEach { renderStone(it) }
+            end()
+        }
     }
 
     private fun clear() = clear(DEVICE)
