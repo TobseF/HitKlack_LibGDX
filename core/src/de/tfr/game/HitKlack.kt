@@ -12,9 +12,14 @@ import de.tfr.game.lib.actor.Point2D
 import de.tfr.game.model.GameField
 import de.tfr.game.ui.DEVICE
 
+/**
+ * @author Tobse4Git@gmail.com
+ */
 class HitKlack : ApplicationAdapter() {
 
-    data class Resolution(var width: Float, var height: Float)
+    data class Resolution(var width: Float, var height: Float) {
+        fun getCenter() = Point2D(width / 2, height / 2)
+    }
 
     internal lateinit var camera: OrthographicCamera
     private lateinit var renderer: Renderer
@@ -33,9 +38,8 @@ class HitKlack : ApplicationAdapter() {
         camera = OrthographicCamera(resolution.height, resolution.height);
         camera.setToOrtho(false); //true to invert y axis
         viewport = FitViewport(resolution.height, resolution.height, camera)
-        val center = Point2D((resolution.width / 2), (resolution.height / 2))
-        renderer = Renderer(center, camera)
-        controller = Controller(center, renderer.getFieldSize(gameField), viewport)
+        renderer = Renderer(resolution.getCenter(), camera)
+        controller = Controller(resolution.getCenter(), renderer.getFieldSize(gameField), viewport)
         controller.addTouchListener(game)
     }
 

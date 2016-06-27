@@ -44,7 +44,6 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
         Gdx.input.isCatchBackKey = true;
     }
 
-
     val touchAreas: List<TouchArea> by lazy {
         arrayListOf(left, right, top, bottom)
     }
@@ -56,27 +55,21 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
     }
 
     override fun keyDown(keycode: Int): Boolean {
-        when (keycode) {
-            Keys.RIGHT ->
-                notifyListener(Right)
-            Keys.UP ->
-                notifyListener(Top)
-            Keys.DOWN ->
-                notifyListener(Bottom)
-            Keys.LEFT ->
-                notifyListener(Left)
-            Keys.SPACE -> {
-                notifyListener(Action)
-            }
-            Keys.P -> {
-                notifyListener(Pause)
-            }
-            Keys.ESCAPE, Keys.BACK -> {
-                notifyListener(Esc)
-            }
-        }
+        fun toControl(keycode: Int) =
+                when (keycode) {
+                    Keys.RIGHT -> Right
+                    Keys.UP -> Top
+                    Keys.DOWN -> Bottom
+                    Keys.LEFT -> Left
+                    Keys.SPACE -> Action
+                    Keys.P -> Pause
+                    Keys.ESCAPE, Keys.BACK -> Esc
+                    else -> null
+                }
+        toControl(keycode)?.let { notifyListener(it) }
         return true
     }
+
 
     fun addTouchListener(touchListener: ControlListener) {
         touchListeners.add(touchListener)

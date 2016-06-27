@@ -4,6 +4,7 @@ import de.tfr.game.model.GameField
 import de.tfr.game.model.Orientation
 import de.tfr.game.model.Ring
 import de.tfr.game.model.Stone
+import de.tfr.game.model.Stone.State
 import de.tfr.game.util.Timer
 
 /**
@@ -102,11 +103,17 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     }
 
     private fun misstep() {
+        resetRing()
+        if (active.state == State.Set) {
+            active.block.reset()
+        }
+        respawnStone()
+    }
+
+    private fun resetRing() {
         activeRing?.reset()
-        active.block.reset()
         activeRing = null
         resetLastFullRing()
-        respawnStone()
     }
 
     private fun firstFull(): Ring? = field.find(Ring::isFull)
