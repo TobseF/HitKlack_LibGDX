@@ -8,9 +8,11 @@ import java.util.*
  */
 class Ring(val index: Int) : Iterable<Block> {
 
+    private val SIDES = 4
+
     override fun iterator() = blocks.iterator()
 
-    private var blocks: Array<Block> = Array(4, { i -> Block(index, Orientation.values()[i]) })
+    private var blocks: Array<Block> = Array(SIDES, { i -> Block(index, Orientation.values()[i]) })
 
     operator fun get(orientation: Orientation) = blocks[orientation.ordinal]
 
@@ -18,7 +20,7 @@ class Ring(val index: Int) : Iterable<Block> {
 
     fun size() = blocks.filter { it.isTaken() }.count()
 
-    fun isFull() = size() == 4
+    fun isFull() = size() == SIDES
 
     fun freeSides(): List<Orientation> {
         return blocks.filter { it.isEmpty() }.map { it.orientation }.toList()

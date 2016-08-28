@@ -1,6 +1,6 @@
 package de.tfr.game
 
-import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Gdx.input
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.math.Rectangle
@@ -22,12 +22,12 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
     private val bottom: TouchArea
 
     private val distance = 90f
-    private val radius = 50f
+    private val radius = 62f
+    private val vibrateTime = 26
 
     private val touchListeners: MutableCollection<ControlListener> = ArrayList()
 
     enum class Control {Left, Right, Top, Bottom, Esc, Action, Pause }
-
     private class Button(centerX: Float, centerY: Float, radius: Float) : Rectangle(centerX - radius, centerY - radius, radius * 2, radius * 2)
     class TouchArea(val control: Control, val rect: Rectangle)
 
@@ -35,13 +35,29 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
         fun controlEvent(control: Control)
     }
 
+    class TouchPoint(inputIndex: Int) : Vector2(input.getX(inputIndex).toFloat(), input.getY(inputIndex).toFloat())
+
+    fun isPressed(control: Control): Boolean {
+        val touchPointers = getTouchPointers()
+        fun touches(touchArea: TouchArea) = touchPointers.any(touchArea.rect::contains)
+        when (control) {
+            Left -> return input.isKeyPressed(Keys.LEFT) || touches(left)
+            Right -> return input.isKeyPressed(Keys.RIGHT) || touches(right)
+            Top -> return input.isKeyPressed(Keys.UP) || touches(top)
+            Bottom -> return input.isKeyPressed(Keys.DOWN) || touches(bottom)
+        }
+        return false
+    }
+
+    private fun getTouchPointers() = (0..6).filter(input::isTouched).map { viewport.unproject(TouchPoint(it)) }.filter { !it.isZero }
+
     init {
         left = TouchArea(Left, Button(x - gameRadius - distance, y, radius))
         right = TouchArea(Right, Button(x + gameRadius + distance, y, radius))
         top = TouchArea(Top, Button(x, y + gameRadius + distance, radius))
         bottom = TouchArea(Bottom, Button(x, y - gameRadius - distance, radius))
-        Gdx.input.inputProcessor = this
-        Gdx.input.isCatchBackKey = true;
+        input.inputProcessor = this
+        input.isCatchBackKey = true;
     }
 
     val touchAreas: List<TouchArea> by lazy {
@@ -50,7 +66,10 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         val worldCords = viewport.unproject(Vector2(screenX.toFloat(), screenY.toFloat()))
-        touchAreas.filter { it.rect.contains(worldCords.x, worldCords.y) }.forEach { notifyListener(it.control) }
+        touchAreas.filter { it.rect.contains(worldCords.x, worldCords.y) }.forEach {
+            doHapticFeedback()
+            notifyListener(it.control)
+        }
         return true
     }
 
@@ -66,16 +85,15 @@ class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : Inpu
                     Keys.ESCAPE, Keys.BACK -> Esc
                     else -> null
                 }
-        toControl(keycode)?.let { notifyListener(it) }
+        toControl(keycode)?.let(this::notifyListener)
+        doHapticFeedback()
         return true
     }
 
+    private fun doHapticFeedback() = input.vibrate(vibrateTime)
 
-    fun addTouchListener(touchListener: ControlListener) {
-        touchListeners.add(touchListener)
-    }
+    fun addTouchListener(touchListener: ControlListener) = touchListeners.add(touchListener)
 
-    private fun notifyListener(control: Control) {
-        touchListeners.forEach { it.controlEvent(control) }
-    }
+    private fun notifyListener(control: Control) = touchListeners.forEach { it.controlEvent(control) }
+
 }

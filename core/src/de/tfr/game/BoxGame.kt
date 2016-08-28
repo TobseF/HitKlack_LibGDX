@@ -20,7 +20,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
 
     init {
         active = Stone(field[field.size - 1][Orientation.Left])
-        timer = Timer(firstPause, { doStep() })
+        timer = Timer(firstPause, this::doStep)
     }
 
     private fun doStep() {
@@ -116,7 +116,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
         resetLastFullRing()
     }
 
-    private fun firstFull(): Ring? = field.find(Ring::isFull)
+    private fun firstFull() = field.find(Ring::isFull)
 
     private fun resetLastFullRing() {
         firstFull()?.reset()

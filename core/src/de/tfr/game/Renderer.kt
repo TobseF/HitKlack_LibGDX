@@ -22,7 +22,7 @@ class Renderer(point: Point, val camera: Camera) : Point by point {
     private val gap = 6
     private val blockWith = 18f
     private val radius = 8f
-    private var renderer = ShapeRenderer()
+    private val renderer = ShapeRenderer()
 
     fun start() {
         renderer.projectionMatrix = camera.combined;
@@ -35,7 +35,7 @@ class Renderer(point: Point, val camera: Camera) : Point by point {
         renderer.color = GREEN_LIGHT2
         renderer.circle(x, y, radius)
 
-        field.forEach { ring -> renderRing(ring) }
+        field.forEach(this::renderRing)
     }
 
     private fun renderBackground(field: GameField) {
@@ -78,7 +78,6 @@ class Renderer(point: Point, val camera: Camera) : Point by point {
     }
 
     private fun renderBlock(block: Block, stone: Stone?, x: Float, y: Float) {
-        renderer.rect(x, y, 1f, 1f)
         val length = ((block.row) * (blockWith * 2)) + ((2 * gap) * (block.row + 1))
         val side = length / 2
         val width = blockWith / 2
@@ -95,59 +94,34 @@ class Renderer(point: Point, val camera: Camera) : Point by point {
             Orientation.Down -> renderer.rect(x - side, y - width, length, blockWith)
         }
 
+        fun renderTriangleLeftUp(x: Float, y: Float) = renderer.triangle(x, y, x, y + blockWith, x + blockWith, y)
+        fun renderTriangleLeftDown(x: Float, y: Float) = renderer.triangle(x, y, x, y - blockWith, x + blockWith, y)
+        fun renderTriangleRightUp(x: Float, y: Float) = renderer.triangle(x, y, x + blockWith, y + blockWith, x + blockWith, y)
+        fun renderTriangleRightDown(x: Float, y: Float) = renderer.triangle(x, y, x + blockWith, y - blockWith, x + blockWith, y)
+        fun renderTriangleUpLeft(x: Float, y: Float) = renderer.triangle(x, y, x, y + blockWith, x - blockWith, y + blockWith)
+        fun renderTriangleUpRight(x: Float, y: Float) = renderer.triangle(x, y, x, y + blockWith, x + blockWith, y + blockWith)
+        fun renderTriangleDownLeft(x: Float, y: Float) = renderer.triangle(x, y, x, y + blockWith, x - blockWith, y)
+        fun renderTriangleDownRight(x: Float, y: Float) = renderer.triangle(x, y, x, y + blockWith, x + blockWith, y)
+
         when (block.orientation) {
             Orientation.Left -> {
-                renderTriangleLeftUp(x - width, y + side, blockWith)
-                renderTriangleLeftDown(x - width, y - side, blockWith)
+                renderTriangleLeftUp(x - width, y + side)
+                renderTriangleLeftDown(x - width, y - side)
             }
             Orientation.Right -> {
-                renderTriangleReightUp(x - width, y + side, blockWith)
-                renderTriangleReightDown(x - width, y - side, blockWith)
+                renderTriangleRightUp(x - width, y + side)
+                renderTriangleRightDown(x - width, y - side)
             }
-
             Orientation.Up -> {
-                renderTriangleUpLeft(x - side, y - width, blockWith)
-                renderTriangleUpRight(x + side, y - width, blockWith)
+                renderTriangleUpLeft(x - side, y - width)
+                renderTriangleUpRight(x + side, y - width)
             }
             Orientation.Down -> {
-                renderTriangleDownLeft(x - side, y - width, blockWith)
-                renderTriangleDownRight(x + side, y - width, blockWith)
+                renderTriangleDownLeft(x - side, y - width)
+                renderTriangleDownRight(x + side, y - width)
             }
 
         }
     }
-
-    private fun renderTriangleLeftUp(x: Float, y: Float, side: Float) {
-        renderer.triangle(x, y, x, y + side, x + side, y)
-    }
-
-    private fun renderTriangleLeftDown(x: Float, y: Float, side: Float) {
-        renderer.triangle(x, y, x, y - side, x + side, y)
-    }
-
-    private fun renderTriangleReightUp(x: Float, y: Float, side: Float) {
-        renderer.triangle(x, y, x + side, y + side, x + side, y)
-    }
-
-    private fun renderTriangleReightDown(x: Float, y: Float, side: Float) {
-        renderer.triangle(x, y, x + side, y - side, x + side, y)
-    }
-
-    private fun renderTriangleUpLeft(x: Float, y: Float, side: Float) {
-        renderer.triangle(x, y, x, y + side, x - side, y + side)
-    }
-
-    private fun renderTriangleUpRight(x: Float, y: Float, side: Float) {
-        renderer.triangle(x, y, x, y + side, x + side, y + side)
-    }
-
-    private fun renderTriangleDownLeft(x: Float, y: Float, side: Float) {
-        renderer.triangle(x, y, x, y + side, x - side, y)
-    }
-
-    private fun renderTriangleDownRight(x: Float, y: Float, side: Float) {
-        renderer.triangle(x, y, x, y + side, x + side, y)
-    }
-
 
 }

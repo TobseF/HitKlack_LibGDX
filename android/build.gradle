@@ -1,6 +1,11 @@
 android {
     buildToolsVersion "23.0.2"
     compileSdkVersion 23
+
+    dexOptions {
+        javaMaxHeapSize "2g"
+    }
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
