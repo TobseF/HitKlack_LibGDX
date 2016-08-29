@@ -17,6 +17,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     private val timer: Timer
     private val fallingSpeed = 0.3f
     private val firstPause = 0.7f
+    private val sounds = SoundMachine()
 
     init {
         active = Stone(field[field.size - 1][Orientation.Left])
@@ -87,22 +88,29 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
         }
     }
 
+    private fun isBlockOutsideOfRing() = activeRing?.index != active.block.row
+
     private fun setStone(stone: Stone) {
         active.block.stone = active
         stone.freeze()
         if (activeRing != null) {
             if (activeRing!!.isFull()) {
+                sounds.playCircleOK()
                 activeRing = null
-            } else if (activeRing?.index != active.block.row) {
+            } else if (isBlockOutsideOfRing()) {
                 misstep()
+            } else {
+                sounds.playLineOK()
             }
         } else {
+            sounds.playLineOK()
             activeRing = field[active.block.row]
         }
         respawnStone()
     }
 
     private fun misstep() {
+        sounds.playLineMissed()
         resetRing()
         if (active.state == State.Set) {
             active.block.reset()

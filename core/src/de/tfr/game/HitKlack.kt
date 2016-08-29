@@ -30,16 +30,13 @@ class HitKlack : ApplicationAdapter() {
     private lateinit var display: Display
     private lateinit var displayRenderer: DisplayRenderer
     private lateinit var controllerRenderer: ControllerRenderer
+    private lateinit var game: BoxGame
 
-    private var game: BoxGame
     private val gameField = GameField(10)
     private val resolution = Resolution(800f, 1100f)
 
-    init {
-        game = BoxGame(gameField)
-    }
-
     override fun create() {
+        game = BoxGame(gameField)
         camera = OrthographicCamera(resolution.width, resolution.height);
         camera.setToOrtho(false); //true to invert y axis
 
