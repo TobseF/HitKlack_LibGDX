@@ -31,15 +31,15 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
 
     override fun controlEvent(control: Controller.Control) {
         when (control) {
-            mapOrientation(active.block.orientation) -> setStone()
+            active.block.orientation.toControl() -> setStone()
             Controller.Control.Action -> setStone(active)
             Controller.Control.Esc -> reset()
             Controller.Control.Pause -> timer.togglePause()
         }
     }
 
-    fun mapOrientation(orientation: Orientation): Controller.Control =
-            when (orientation) {
+    fun Orientation.toControl(): Controller.Control =
+            when (this) {
                 Orientation.Left -> Controller.Control.Left
                 Orientation.Right -> Controller.Control.Right
                 Orientation.Up -> Controller.Control.Top
@@ -88,7 +88,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
         }
     }
 
-    private fun isBlockOutsideOfRing() = activeRing?.index != active.block.row
+    private infix fun Stone.isOutsideOf(ring: Ring?) = ring?.index != this.block.row
 
     private fun setStone(stone: Stone) {
         active.block.stone = active
@@ -97,7 +97,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
             if (activeRing!!.isFull()) {
                 sounds.playCircleOK()
                 activeRing = null
-            } else if (isBlockOutsideOfRing()) {
+            } else if (active isOutsideOf activeRing) {
                 misstep()
             } else {
                 sounds.playLineOK()

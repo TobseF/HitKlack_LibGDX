@@ -12,7 +12,5 @@ class Display(box: Box) : Box by box {
     var watch = StopWatch()
     var formatter = TimerFormatter()
 
-    fun getText(): String {
-        return formatter.getFormattedTimeAsString(watch.getTime())
-    }
+    fun getText() = formatter.getFormattedTimeAsString(watch.getTime())
 }
