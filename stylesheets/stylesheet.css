@@ -335,7 +335,7 @@ Full-Width Styles
   background: url(../images/sprite_download.png) no-repeat bottom left;
 }
 
-.tar_download_link {
+.apk_download_link {
   display: block;
   float: right;
   width: 90px;
@@ -350,7 +350,7 @@ Full-Width Styles
   background: url(../images/sprite_download.png) no-repeat top left;
 }
 
-.tar_download_link:hover {
+.apk_download_link:hover {
   background: url(../images/sprite_download.png) no-repeat top right;
 }
 
