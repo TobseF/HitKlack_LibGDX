@@ -1,5 +1,11 @@
 package de.tfr.game
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Camera
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Vector2
 import de.tfr.game.Controller.Control
 
 /**
@@ -7,19 +13,17 @@ import de.tfr.game.Controller.Control
  */
 class ControllerRenderer(val camera: Camera) {
 
-    typealias TexturePair = Pair<TextureRegion, TextureRegion>
-
     private val buttons: SpriteSheet
-    private val red: TexturePair
-    private val blue: TexturePair
-    private val yellow: TexturePair
-    private val green: TexturePair
+    private val red: Pair<TextureRegion, TextureRegion>
+    private val blue: Pair<TextureRegion, TextureRegion>
+    private val yellow: Pair<TextureRegion, TextureRegion>
+    private val green: Pair<TextureRegion, TextureRegion>
     private val batch: SpriteBatch
     private val width = 120
 
     init {
         val texture = Texture(Gdx.files.internal("buttons.png"))
-        texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         buttons = SpriteSheet(texture, width, width, 2, 4)
         green = Pair(buttons[0], buttons[1])
@@ -39,7 +43,7 @@ class ControllerRenderer(val camera: Camera) {
             batch.draw(textureRegion, pos.x, pos.y)
         }
 
-        fun button(button: TexturePair, control: Control): TextureRegion {
+        fun button(button: Pair<TextureRegion, TextureRegion>, control: Control): TextureRegion {
             return if (controller.isPressed(control)) button.second else button.first
         }
 

@@ -118,7 +118,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     }
 
     private fun resetRing() {
-        activeRing.reset()
+        activeRing?.reset()
         activeRing = null
         resetLastFullRing()
     }
