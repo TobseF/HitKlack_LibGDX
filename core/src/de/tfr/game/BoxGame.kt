@@ -67,9 +67,8 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
         timer.actionTime = firstPause
     }
 
-    private fun randomFreeOrientation(): Orientation {
-        return activeRing?.randomFreeSide() ?: Orientation.random()
-    }
+    private fun randomFreeOrientation() = activeRing?.randomFreeSide() ?: Orientation.random()
+
 
     private fun move(stone: Stone) {
         if (stone.isInLastRow()) {
@@ -119,7 +118,7 @@ class BoxGame(val field: GameField) : Controller.ControlListener {
     }
 
     private fun resetRing() {
-        activeRing?.reset()
+        activeRing.reset()
         activeRing = null
         resetLastFullRing()
     }

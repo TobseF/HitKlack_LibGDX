@@ -39,6 +39,16 @@ This demonstrates two different types of method references. The `Ring::isFull` p
 In the second example the `renderer::renderStone` points a function of the `renderer`. That’s called a **bound reference** which points to it’s reviever.
 The last example, the `getTouchPointers()`, shows the combination of ranges, lamdas, Kotlins stream API and method references. It returns a list of all unprojected touchpoints which are not zero (0, 0).
 
+## [Delegation](https://kotlinlang.org/docs/reference/delegation.html#delegation)
+``` kotlin
+class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : InputProcessor by InputAdapter(), Point by point {
+    //..
+}
+```
+This class implements the `InputProcessor` and the `Point` interface. Callers will be delegated to the implementation declared with the `by` statement.
+In pure Java I had to determine one parent because only a simple 1:1 inheritance is possible. And tying to implement both would result in a bunch of boilerplate code.
+With the power of delegations this predicament can be solved with a minimum and clear syntax.  
+
 ###  [Data classes](https://kotlinlang.org/docs/reference/data-classes.html)
 ``` kotlin
 data class Resolution(var width: Float, var height: Float) {

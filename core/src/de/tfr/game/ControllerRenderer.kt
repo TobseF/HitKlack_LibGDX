@@ -29,10 +29,10 @@ class ControllerRenderer(val camera: Camera) {
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
         buttons = SpriteSheet(texture, width, width, 2, 4)
-        green = Pair(buttons[0], buttons[1])
-        blue = Pair(buttons[2], buttons[3])
-        yellow = Pair(buttons[4], buttons[5])
-        red = Pair(buttons[6], buttons[7])
+        green = TexturePair(buttons[0], buttons[1])
+        blue = TexturePair(buttons[2], buttons[3])
+        yellow = TexturePair(buttons[4], buttons[5])
+        red = TexturePair(buttons[6], buttons[7])
         batch = SpriteBatch()
     }
 

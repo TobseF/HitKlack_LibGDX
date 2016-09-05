@@ -14,9 +14,7 @@ class Block(val row: Int, val orientation: Orientation) {
         return !isEmpty()
     }
 
-    override fun toString(): String {
-        return "Block [$row ${orientation.char()} $stone]"
-    }
+    override fun toString() = "Block [$row ${orientation.char()} $stone]"
 
     fun reset() {
         stone = null

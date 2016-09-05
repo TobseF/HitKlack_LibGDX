@@ -64,7 +64,7 @@ class HitKlack : ApplicationAdapter() {
         with(renderer) {
             start()
             render(game.field)
-            game.getStones().forEach(this::renderStone)
+            game.getStones().forEach(renderer::renderStone)
             end()
         }
     }

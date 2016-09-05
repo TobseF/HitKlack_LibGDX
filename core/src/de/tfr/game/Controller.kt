@@ -3,6 +3,7 @@ package de.tfr.game
 import com.badlogic.gdx.Gdx.input
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
@@ -14,7 +15,7 @@ import java.util.*
 /**
  * @author Tobse4Git@gmail.com
  */
-class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : InputAdapter(), Point by point {
+class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : InputProcessor by InputAdapter(), Point by point {
 
     private val left: TouchArea
     private val right: TouchArea
