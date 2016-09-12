@@ -41,7 +41,7 @@ The last example, the `getTouchPointers()`, shows the combination of ranges, lam
 
 ## [Delegation](https://kotlinlang.org/docs/reference/delegation.html#delegation)
 ``` kotlin
-class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : InputProcessor by InputAdapter(), Point by point {
+class Controller(point: Point, val viewport: Viewport) : InputProcessor by InputAdapter(), Point by point {
     //..
 }
 ```
