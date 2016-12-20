@@ -4,13 +4,14 @@ buildscript {
     }
 
     repositories {
+        jcenter()
         mavenLocal()
         mavenCentral()
         maven { url "https://dl.bintray.com/kotlin/kotlin-eap-1.1" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
@@ -28,7 +29,6 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
-        kotlinVersion = '1.1-M01'
     }
 
     repositories {
