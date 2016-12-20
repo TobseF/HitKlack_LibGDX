@@ -3,7 +3,7 @@ Retro console game remake of Mephisto Hit Klack
 
 This is a just for fun work in progress game remake. It's based on a German console, the Hit Klack from Mephisto. It runs on multiple platforms: Android, Windows, Linux, and Mac. For me it's a way to test the latest features of [Kotlin](https://kotlinlang.org/), a programming language by [Jetbrains](https://www.jetbrains.com/). It uses the [LibGDX](https://libgdx.badlogicgames.com/) Java game development framework.
 
-## [Official Website and Downloads ...](https://tobsef.github.io/hitklack/)
+## [Official Website and Downloads ...](https://tobsef.github.io/HitKlack/)
 
 
 ## Kotlin Coding Hitlist
@@ -41,7 +41,7 @@ The last example, the `getTouchPointers()`, shows the combination of ranges, lam
 
 ## [Delegation](https://kotlinlang.org/docs/reference/delegation.html#delegation)
 ``` kotlin
-class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : InputProcessor by InputAdapter(), Point by point {
+class Controller(point: Point, val viewport: Viewport) : InputProcessor by InputAdapter(), Point by point {
     //..
 }
 ```
