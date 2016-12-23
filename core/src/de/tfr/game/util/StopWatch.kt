@@ -5,8 +5,5 @@ package de.tfr.game.util
  */
 class StopWatch(var start: ms = System.currentTimeMillis()) {
 
-    typealias ms = Long
-
     fun getTime(): ms = System.currentTimeMillis() - start
-
 }

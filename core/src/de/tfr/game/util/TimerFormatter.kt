@@ -4,7 +4,6 @@ package de.tfr.game.util
  * @author Tobse4Git@gmail.com
  */
 class TimerFormatter {
-    typealias ms = Long
 
     fun getFormattedTimeAsString(time: ms): String {
         val totalSeconds = time / 1000

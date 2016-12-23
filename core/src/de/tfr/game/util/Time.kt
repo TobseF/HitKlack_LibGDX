@@ -1,5 +1,7 @@
 package de.tfr.game.util
 
+typealias ms = Long
+
 /**
  * @author Tobse4Git@gmail.com
  */
