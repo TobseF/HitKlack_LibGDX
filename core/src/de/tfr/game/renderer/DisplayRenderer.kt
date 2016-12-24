@@ -14,16 +14,15 @@ import de.tfr.game.ui.GREEN_LIGHT2
 /**
  * @author Tobse4Git@gmail.com
  */
-class DisplayRenderer(val display: Display, val camera: Camera) {
+class DisplayRenderer(val display: Display, val camera: Camera, val batch: SpriteBatch) {
     lateinit var font: BitmapFont
-    lateinit var batch: SpriteBatch
+
     lateinit var glyphLayout: GlyphLayout
     private var renderer = ShapeRenderer()
     var time = System.currentTimeMillis()
 
     fun init() {
         font = BitmapFont(Gdx.files.internal("fonts/segment7.fnt"))
-        batch = SpriteBatch()
         glyphLayout = GlyphLayout(font, "00 00")
     }
 

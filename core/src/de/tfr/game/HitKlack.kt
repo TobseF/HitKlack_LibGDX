@@ -6,12 +6,14 @@ import com.badlogic.gdx.Gdx.graphics
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import de.tfr.game.lib.actor.Box2D
 import de.tfr.game.lib.actor.Point2D
 import de.tfr.game.model.GameField
 import de.tfr.game.renderer.DisplayRenderer
+import de.tfr.game.renderer.LogoRenderer
 import de.tfr.game.ui.DEVICE
 
 /**
@@ -31,24 +33,30 @@ class HitKlack : ApplicationAdapter() {
     private lateinit var displayRenderer: DisplayRenderer
     private lateinit var controllerRenderer: ControllerRenderer
     private lateinit var game: BoxGame
+    private lateinit var logo: LogoRenderer
 
     private val gameField = GameField(10)
     private val resolution = Resolution(800f, 1100f)
+    lateinit var batch: SpriteBatch
 
     override fun create() {
+        batch = SpriteBatch()
         game = BoxGame(gameField)
         camera = OrthographicCamera(resolution.width, resolution.height);
         camera.setToOrtho(false); //true to invert y axis
 
         viewport = FitViewport(resolution.width, resolution.height, camera)
-        renderer = Renderer(resolution.getCenter(), camera)
-        controller = Controller(resolution.getCenter(), renderer.getFieldSize(gameField), viewport)
+        val center = resolution.getCenter()
+        renderer = Renderer(center, camera)
+        val gameFieldSize = renderer.getFieldSize(gameField)
+        controller = Controller(center, gameFieldSize, viewport)
         controller.addTouchListener(game)
-        display = Display(Box2D(resolution.getCenter(), 280f, 90f))
-        displayRenderer = DisplayRenderer(display, camera)
+        display = Display(Box2D(center, 280f, 90f))
+        displayRenderer = DisplayRenderer(display, camera, SpriteBatch())
 
         displayRenderer.init()
         controllerRenderer = ControllerRenderer(camera)
+        logo = LogoRenderer(center, camera, SpriteBatch(), gameFieldSize)
     }
 
     override fun render() {
@@ -58,6 +66,7 @@ class HitKlack : ApplicationAdapter() {
         renderField()
         game.update(graphics.deltaTime)
         displayRenderer.render()
+        logo.render()
     }
 
     private fun renderField() {
