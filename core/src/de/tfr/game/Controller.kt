@@ -17,10 +17,10 @@ import java.util.*
  */
 class Controller(point: Point, gameRadius: Float, val viewport: Viewport) : InputProcessor by InputAdapter(), Point by point {
 
-    private val left: TouchArea
-    private val right: TouchArea
-    private val top: TouchArea
-    private val bottom: TouchArea
+    val left: TouchArea
+    val right: TouchArea
+    val top: TouchArea
+    val bottom: TouchArea
 
     private val distance = 90f
     private val radius = 62f

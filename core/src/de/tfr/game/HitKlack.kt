@@ -19,6 +19,8 @@ import de.tfr.game.renderer.DisplayRenderer
 import de.tfr.game.renderer.GameFieldRenderer
 import de.tfr.game.renderer.LogoRenderer
 import de.tfr.game.ui.DEVICE
+import de.tfr.game.util.extensions.OrthographicCamera
+import de.tfr.game.util.extensions.glClearColor
 
 /**
  * @author Tobse4Git@gmail.com
@@ -49,8 +51,8 @@ class HitKlack : ApplicationAdapter() {
         shapeRenderer = ShapeRenderer()
         batch = SpriteBatch()
         game = BoxGame(gameField)
-        camera = OrthographicCamera(resolution.width, resolution.height);
-        camera.setToOrtho(false); //true to invert y axis
+        camera = OrthographicCamera(resolution);
+        camera.setToOrtho(false);
 
         viewport = FitViewport(resolution.width, resolution.height, camera)
         val center = resolution.getCenter()
@@ -88,7 +90,7 @@ class HitKlack : ApplicationAdapter() {
     private fun clear() = clear(DEVICE)
 
     private fun clear(color: Color) {
-        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a)
+        Gdx.gl.glClearColor(color)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         //   renderGameBackground()
     }

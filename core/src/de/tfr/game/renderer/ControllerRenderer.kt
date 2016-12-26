@@ -15,23 +15,24 @@ import de.tfr.game.Controller.Control
 class ControllerRenderer(val camera: Camera) {
 
     private val buttons: SpriteSheet
-    private val red: Pair<TextureRegion, TextureRegion>
-    private val blue: Pair<TextureRegion, TextureRegion>
-    private val yellow: Pair<TextureRegion, TextureRegion>
-    private val green: Pair<TextureRegion, TextureRegion>
-    private val batch: SpriteBatch
+    private val red: ButtonTexture
+    private val blue: ButtonTexture
+    private val yellow: ButtonTexture
+    private val green: ButtonTexture
+    private val batch: SpriteBatch = SpriteBatch()
     private val width = 120
+
+    private class ButtonTexture(val normal: TextureRegion, val pressed: TextureRegion)
 
     init {
         val texture = Texture(Gdx.files.internal("buttons.png"))
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         buttons = SpriteSheet(texture, width, width, 2, 4)
-        green = Pair(buttons[0], buttons[1])
-        blue = Pair(buttons[2], buttons[3])
-        yellow = Pair(buttons[4], buttons[5])
-        red = Pair(buttons[6], buttons[7])
-        batch = SpriteBatch()
+        green = ButtonTexture(buttons[0], buttons[1])
+        blue = ButtonTexture(buttons[2], buttons[3])
+        yellow = ButtonTexture(buttons[4], buttons[5])
+        red = ButtonTexture(buttons[6], buttons[7])
     }
 
     fun render(controller: Controller) {
@@ -44,15 +45,15 @@ class ControllerRenderer(val camera: Camera) {
             batch.draw(textureRegion, pos.x, pos.y)
         }
 
-        fun button(button: Pair<TextureRegion, TextureRegion>, control: Control): TextureRegion {
-            return if (controller.isPressed(control)) button.second else button.first
+        fun button(button: ButtonTexture, control: Control): TextureRegion {
+            return if (controller.isPressed(control)) button.pressed else button.normal
         }
 
 
-        draw(button(red, Control.Left), controller.touchAreas[0])
-        draw(button(blue, Control.Right), controller.touchAreas[1])
-        draw(button(yellow, Control.Bottom), controller.touchAreas[3])
-        draw(button(green, Control.Top), controller.touchAreas[2])
+        draw(button(red, Control.Left), controller.left)
+        draw(button(blue, Control.Right), controller.right)
+        draw(button(yellow, Control.Bottom), controller.bottom)
+        draw(button(green, Control.Top), controller.top)
 
         batch.end()
     }
