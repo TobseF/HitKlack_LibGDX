@@ -1,4 +1,4 @@
-package de.tfr.game
+package de.tfr.game.renderer
 
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
@@ -17,7 +17,7 @@ import de.tfr.game.ui.GREEN_LIGHT2
 /**
  * @author Tobse4Git@gmail.com
  */
-class Renderer(point: Point, val camera: Camera) : Point by point {
+class GameFieldRenderer(point: Point, val camera: Camera) : Point by point {
 
     private val gap = 6
     private val blockWith = 18f
