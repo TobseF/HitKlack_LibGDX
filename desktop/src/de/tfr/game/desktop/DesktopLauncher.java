@@ -5,6 +5,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import de.tfr.game.HitKlack;
 
 /**
+ * ## Run configuration setup:
+ * Set the working directory to `\hitklack\android\assets`
  * @author Tobse4Git@gmail.com
  */
 public class DesktopLauncher {
