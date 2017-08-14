@@ -32,8 +32,8 @@ private fun renderField() {
 }
 
 private fun getTouchPointers() = (0..6).filter(input::isTouched)
-										.map { viewport.unproject(TouchPoint(it)) }
-										.filter { !it.isZero }
+	.map { viewport.unproject(TouchPoint(it)) }
+	.filter { !it.isZero }
 ```
 This demonstrates two different types of method references. The `Ring::isFull` points to the `isFull`of the `Iterable<Ring>`. Hopefuly `Ring` can be omitted due a smart compiler. 
 In the second example the `renderer::renderStone` points a function of the `renderer`. That’s called a **bound reference** which points to it’s reviever.
