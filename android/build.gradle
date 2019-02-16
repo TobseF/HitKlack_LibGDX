@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "23.0.2"
-    compileSdkVersion 23
+    buildToolsVersion "28.0.3"
+    compileSdkVersion 28
 
     dexOptions {
         javaMaxHeapSize "2g"
@@ -22,7 +22,7 @@ android {
     defaultConfig {
         applicationId "de.tfr.game"
         minSdkVersion 8
-        targetSdkVersion 23
+        targetSdkVersion 26
     }
 }
 // called every time gradle gets executed, takes the native dependencies of

@@ -1,17 +1,19 @@
 buildscript {
     ext {
-        kotlinVersion = '1.1-M04'
+        kotlinVersion = '1.2.+'
+        androidPluginVersion = '3.0.1'
     }
 
     repositories {
         jcenter()
         mavenLocal()
         mavenCentral()
-        maven { url "https://dl.bintray.com/kotlin/kotlin-eap-1.1" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url 'https://maven.google.com/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath "com.android.tools.build:gradle:$androidPluginVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
@@ -24,7 +26,7 @@ allprojects {
 
     ext {
         appName = "hitklack"
-        gdxVersion = '1.9.5'
+        gdxVersion = '1.9.8'
         roboVMVersion = '2.3.0'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
@@ -34,9 +36,10 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url "https://dl.bintray.com/kotlin/kotlin-eap-1.1" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url 'https://maven.google.com/' }
     }
 }
 
