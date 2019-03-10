@@ -256,6 +256,16 @@ form {
   padding: 20px;
 }
 
+.info_box{
+    padding: 8px;
+    background-color: darkorange;
+    color: white;
+}
+
+.info_box a{
+    color: black;
+}
+
 /*******************************************************************************
 Full-Width Styles
 *******************************************************************************/
