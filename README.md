@@ -1,9 +1,15 @@
-# Hit Klack
+# Hit Klack - LibGDX
 Retro console game remake of Mephisto Hit Klack
 
-This is a just for fun work in progress game remake. It's based on a German console, the Hit Klack from Mephisto. It runs on multiple platforms: Android, Windows, Linux, and Mac. For me it's a way to test the latest features of [Kotlin](https://kotlinlang.org/), a programming language by [Jetbrains](https://www.jetbrains.com/). It uses the [LibGDX](https://libgdx.badlogicgames.com/) Java game development framework.
+📢 Check out the **NEW** [HitKlack Repo](https://github.com/TobseF/HitKlack) based on [Korge](https://korge.soywiz.com/) framework.
 
-## [Official Website and Downloads ...](https://tobsef.github.io/HitKlack/)
+This is a just for fun work in progress game remake.
+It's based on a German console, the Hit Klack from Mephisto.
+It runs on multiple platforms: Android, Windows, Linux, and Mac.
+For me it's a way to test the latest features of [Kotlin](https://kotlinlang.org/), a programming language by [Jetbrains](https://www.jetbrains.com/).
+It uses the [LibGDX](https://libgdx.badlogicgames.com/) Java game development framework.
+
+### [🌍 Website and Downloads ...](https://tobsef.github.io/HitKlack_LibGDX/)
 
 
 ## Kotlin Coding Hitlist
